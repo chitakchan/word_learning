@@ -1,0 +1,22 @@
+{
+    "converses": [
+        {
+            {
+                "name_object":  {"objAction" : "cup_of_teaAction", "layer" : "2",  "name" : "cup_of_tea"},
+                "lines":[
+                      {"line": "d01", "speaker": alan, "startFrame": 1, "endFrame":  89, "soundFileName": "d01_INV_CAR.wav", "waitFor":None, "waitForFrame":(1,20),  "spoken":False, "completed":False},
+                      {"line": "p01", "speaker": name_object, "startFrame": 1, "endFrame":  10, "soundFileName": None, "waitFor":None, "waitForFrame":(1,20),"spoken":False, "completed":False},
+                      {"line": "d01_aft", "speaker": alan, "startFrame": 90, "endFrame":  237, "soundFileName": None, "waitFor":alan, "waitForFrame":(80,89),  "spoken":False, "completed":False},
+                      {"line": "d04", "speaker": alan, "startFrame": 238, "endFrame":  318, "soundFileName": "d04_INV_CAR.wav", "waitFor":nina, "waitForFrame":(230,239),"spoken":False, "completed":False},
+                      {"line": "d06", "speaker": alan, "startFrame": 350, "endFrame":  370, "soundFileName": "d06_INV_CAR.wav", "waitFor":nina, "waitForFrame":(340,346),"spoken":False, "completed":False},
+                      {"line": "d02", "speaker": nina, "startFrame": 90, "endFrame":  158, "soundFileName": "d02_CAR_CAR.wav", "waitFor":alan, "waitForFrame":(80,90), "spoken":False, "completed":False},
+                      {"line": "d03", "speaker": nina, "startFrame": 160, "endFrame":  238, "soundFileName": "d03_CAR_INV.wav", "waitFor":nina, "waitForFrame":(150,159),"spoken":False, "completed":False},
+                      {"line": "d05", "speaker": nina, "startFrame": 318, "endFrame":  345, "soundFileName": "d05_CAR_INV.wav","waitFor":alan, "waitForFrame":(310,319), "spoken":False, "completed":False},
+                      {"line": "p02", "speaker": name_object, "startFrame": 317, "endFrame":  330, "soundFileName": None, "waitFor":nina, "waitForFrame":(318,345),"spoken":False, "completed":False},
+                      {"line": "d99", "speaker": nina, "startFrame": 380, "endFrame":  470, "soundFileName": "d07_CAR_TAR.wav", "waitFor":alan, "waitForFrame":(360,371),"spoken":False, "completed":False}
+
+                ] 
+           }
+        }
+    ]
+}
