@@ -1,0 +1,552 @@
+{
+    "background_pic_dict": { 
+        "high_street": "dundeeHighStreetScene.jpg",
+        "sleepz": "sleepz.jpg",
+        "james_hutton": "james_hutton.jpg",
+        "cup_video": "cup_one_fifth.mp4",
+        "sugar_video": "sugar_2sec.mp4",
+        "donut_video": "donut_400kb.mp4"
+},
+  "converses": [
+    {
+      "converse_no": 0,
+      "converse_name": "cup_of_tea",
+      "background_pic": "sleepz",
+      "display_cube_pic": "cup_video",
+      "_comment": "converse for a cup of tea",
+      "charList": [
+        {
+          "objAction": "alanAction",
+          "layer": 0,
+          "playByParent": false,
+          "name": "alan"
+        },
+        {
+          "objAction": "ninaAction",
+          "layer": 1,
+          "playByParent": false,
+          "name": "nina"
+        },
+        {
+          "objAction": "renderCameraAction",
+          "layer": 3,
+          "playByParent": false,
+          "name": "menu_camera"
+        },
+        {
+          "objAction": "cup_of_teaAction",
+          "layer": 2,
+          "playByParent": false,
+          "name": "cup_of_tea"
+        }
+      ],
+      "dopeList": [
+        {
+          "line": "d01",
+          "speaker_name": "alan",
+          "startFrame": 1,
+          "endFrame": 89,
+          "soundFileName": "d01_INV_CAR.wav",
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 20
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d01_aft",
+          "speaker_name": "alan",
+          "startFrame": 90,
+          "endFrame": 237,
+          "soundFileName": null,
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 89
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d04",
+          "speaker_name": "alan",
+          "startFrame": 238,
+          "endFrame": 318,
+          "soundFileName": "d04_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 230,
+            "high": 239
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d06",
+          "speaker_name": "alan",
+          "startFrame": 350,
+          "endFrame": 370,
+          "soundFileName": "d06_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 340,
+            "high": 346
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "pre_d02",
+          "speaker_name": "nina",
+          "startFrame": 1,
+          "endFrame": 89,
+          "soundFileName": null,
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 10
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d02",
+          "speaker_name": "nina",
+          "startFrame": 90,
+          "endFrame": 158,
+          "soundFileName": "d02_CAR_CAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 90
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d03",
+          "speaker_name": "nina",
+          "startFrame": 160,
+          "endFrame": 238,
+          "soundFileName": "d03_CAR_INV.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 150,
+            "high": 159
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d05",
+          "speaker_name": "nina",
+          "startFrame": 318,
+          "endFrame": 345,
+          "soundFileName": "d05_CAR_INV.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 310,
+            "high": 319
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "pre_p02",
+          "speaker_name": "cup_of_tea",
+          "startFrame": 280,
+          "endFrame": 281,
+          "soundFileName": null,
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 10
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "p02",
+          "speaker_name": "cup_of_tea",
+          "startFrame": 280,
+          "endFrame": 461,
+          "soundFileName": null,
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 318,
+            "high": 345
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d99",
+          "speaker_name": "nina",
+          "startFrame": 380,
+          "endFrame": 470,
+          "soundFileName": "d07_CAR_TAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 360,
+            "high": 371
+          },
+          "spoken": false,
+          "completed": false
+        }
+      ]
+    },
+    {
+      "converse_no": 1,
+      "converse_name": "donut",
+      "background_pic": "james_hutton",
+      "display_cube_pic": "donut_video" ,
+      "_comment": "converse for a donut",
+      "charList": [
+        {
+          "objAction": "alanAction",
+          "layer": 0,
+          "playByParent": false,
+          "name": "alan"
+        },
+        {
+          "objAction": "ninaAction",
+          "layer": 1,
+          "playByParent": false,
+          "name": "nina"
+        },
+        {
+          "objAction": "renderCameraAction",
+          "layer": 3,
+          "playByParent": false,
+          "name": "menu_camera"
+        },
+        {
+          "objAction": "donutAction",
+          "layer": 2,
+          "playByParent": false,
+          "name": "donut"
+        }
+      ],
+      "dopeList": [
+        {
+          "line": "d01",
+          "speaker_name": "alan",
+          "startFrame": 1,
+          "endFrame": 89,
+          "soundFileName": "d01_INV_CAR.wav",
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 20
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d01_aft",
+          "speaker_name": "alan",
+          "startFrame": 90,
+          "endFrame": 237,
+          "soundFileName": null,
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 89
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d04",
+          "speaker_name": "alan",
+          "startFrame": 238,
+          "endFrame": 318,
+          "soundFileName": "d04_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 230,
+            "high": 239
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d06",
+          "speaker_name": "alan",
+          "startFrame": 350,
+          "endFrame": 370,
+          "soundFileName": "d06_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 340,
+            "high": 346
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d02",
+          "speaker_name": "nina",
+          "startFrame": 90,
+          "endFrame": 158,
+          "soundFileName": "d02_CAR_CAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 90
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d03",
+          "speaker_name": "nina",
+          "startFrame": 160,
+          "endFrame": 238,
+          "soundFileName": "d03_CAR_INV.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 150,
+            "high": 159
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d05",
+          "speaker_name": "nina",
+          "startFrame": 318,
+          "endFrame": 345,
+          "soundFileName": "d05_CAR_INV.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 310,
+            "high": 319
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "pre_p02",
+          "speaker_name": "donut",
+          "startFrame": 280,
+          "endFrame": 281,
+          "soundFileName": null,
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 10
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "p02",
+          "speaker_name": "donut",
+          "startFrame": 280,
+          "endFrame": 461,
+          "soundFileName": null,
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 318,
+            "high": 345
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d99",
+          "speaker_name": "nina",
+          "startFrame": 380,
+          "endFrame": 470,
+          "soundFileName": "d07_CAR_TAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 360,
+            "high": 371
+          },
+          "spoken": false,
+          "completed": false
+        }
+      ]
+    },
+    {
+      "converse_no": 2,
+      "converse_name": "sugar_cube",
+      "background_pic": "high_street",
+      "display_cube_pic": "sugar_video" ,      
+      "_comment": "converse for a sugar cube",
+      "charList": [
+        {
+          "objAction": "alanAction",
+          "layer": 0,
+          "playByParent": false,
+          "name": "alan"
+        },
+        {
+          "objAction": "ninaAction",
+          "layer": 1,
+          "playByParent": false,
+          "name": "nina"
+        },
+        {
+          "objAction": "renderCameraAction",
+          "layer": 3,
+          "playByParent": false,
+          "name": "menu_camera"
+        },
+        {
+          "objAction": "sugar_cubeAction",
+          "layer": 2,
+          "playByParent": false,
+          "name": "sugar_cube"
+        }
+      ],
+      "dopeList": [
+        {
+          "line": "d01",
+          "speaker_name": "alan",
+          "startFrame": 1,
+          "endFrame": 89,
+          "soundFileName": "d01_INV_CAR.wav",
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 20
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d01_aft",
+          "speaker_name": "alan",
+          "startFrame": 90,
+          "endFrame": 237,
+          "soundFileName": null,
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 89
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d04",
+          "speaker_name": "alan",
+          "startFrame": 238,
+          "endFrame": 318,
+          "soundFileName": "d04_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 230,
+            "high": 239
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d06",
+          "speaker_name": "alan",
+          "startFrame": 350,
+          "endFrame": 370,
+          "soundFileName": "d06_INV_CAR.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 340,
+            "high": 346
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d02",
+          "speaker_name": "nina",
+          "startFrame": 90,
+          "endFrame": 158,
+          "soundFileName": "d02_CAR_CAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 80,
+            "high": 90
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d03",
+          "speaker_name": "nina",
+          "startFrame": 160,
+          "endFrame": 238,
+          "soundFileName": "d03_CAR_INV.wav",
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 150,
+            "high": 159
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d05",
+          "speaker_name": "nina",
+          "startFrame": 318,
+          "endFrame": 345,
+          "soundFileName": "d05_CAR_INV.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 310,
+            "high": 319
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "pre_p02",
+          "speaker_name": "sugar_cube",
+          "startFrame": 1,
+          "endFrame": 461,
+          "soundFileName": null,
+          "wait_for_name": null,
+          "wait_for_frame": {
+            "low": 1,
+            "high": 10
+          },
+          "spoken": false,
+          "completed": false
+        },
+
+                {
+          "line": "p02",
+          "speaker_name": "sugar_cube",
+          "startFrame": 280,
+          "endFrame": 461,
+          "soundFileName": null,
+          "wait_for_name": "nina",
+          "wait_for_frame": {
+            "low": 318,
+            "high": 345
+          },
+          "spoken": false,
+          "completed": false
+        },
+        {
+          "line": "d99",
+          "speaker_name": "nina",
+          "startFrame": 380,
+          "endFrame": 470,
+          "soundFileName": "d07_CAR_TAR.wav",
+          "wait_for_name": "alan",
+          "wait_for_frame": {
+            "low": 360,
+            "high": 371
+          },
+          "spoken": false,
+          "completed": false
+        }
+      ]
+    }
+  ]
+}
