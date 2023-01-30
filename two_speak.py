@@ -13,6 +13,7 @@ from bge import render as R
 from bge import logic as G 
 import utilities as U
 import json
+import mimetypes
 
 CONVERSE_MODE_STOP=0
 CONVERSE_MODE_PLAY=1
@@ -50,8 +51,13 @@ G.kick_start = 0
 # create a class of conversation, so that we could ask to speak, to pause, to restart with the instance
 
 class Converse:
-    def __init__(self, dopeList):
+    
+    # [{'objAction' : 'alanAction', 'layer' :0, 'playByParent' : False, 'name' : 'alan'},
+    def __init__(self, dopeList, charList, background_pic, display_cube_pic):
+        self.charList = charList
         self.dopeList = dopeList
+        self.background_pic = background_pic
+        self.display_cube_pic = display_cube_pic
         #self.speakerDict = speakerDict
         self.debug = False
         self.play_control = False  # if set it means conversation is enabled
@@ -61,6 +67,29 @@ class Converse:
         self.mode = CONVERSE_MODE_STOP
         self.pause_mode = False
         self.marker = CONVERSE_MARKER_START
+        
+        # to assign an object to character and add to the dope_list
+            
+        #alan = U.Person(objAction = 'alanAction', layer =0, playByParent = False, name = 'alan')  
+        #nina = U.Person(objAction = 'ninaAction', layer =1, playByParent = False, name = 'nina')  
+        #renderCamera = U.Person(objAction = 'renderCameraAction', layer =3, name = 'menu_camera')  
+        #name_object = U.Person(objAction = 'cup_of_teaAction', layer =2, name = 'cup_of_tea')
+    
+        char ={}
+        for i in self.charList:
+            print(f'i in self.charList: {i}')
+            
+            obj = U.Person(objAction = i['objAction'], layer = i['layer'], \
+                  playByParent = i['playByParent'], name = i['name'])
+            char[i['name']]=obj
+        
+        for line in self.dopeList:  # add items of objects to the list in which the speaker_name and the wait_for_name should be  in the char dict 
+            line['speaker'] = char[line['speaker_name']]
+      
+            line['wait_for'] = None if line['wait_for_name'] is None else char[line['wait_for_name']]
+            
+
+        
         
         ##### to allow render image on the plane
         if False:
@@ -165,17 +194,17 @@ class Converse:
                 next
             else:    
                 speaker = line['speaker']    # for each line get the speaker and who it is waiting for
-                waitFor = line['waitFor']
+                wait_for = line['wait_for']
 
                 speakerLayer = speaker.layer
                 speakerObj = speaker.speakerObj
                 speakerAction = speaker.objAction
                 soundFileName = line['soundFileName']
 
-                if not (waitFor == None):
-                    waitForLayer = waitFor.layer
-                    waitForObj = waitFor.speakerObj
-                    endRange = range(line['waitForFrame'][0],line['waitForFrame'][1]) 
+                if not (wait_for == None):
+                    wait_forLayer = wait_for.layer
+                    wait_forObj = wait_for.speakerObj
+                    endRange = range(line['wait_for_frame']['low'],line['wait_for_frame']['high']) 
 
                 # speak out if the line is not start spoken and the object is not speaking anything at the same time
                 # the latter condition is added to make sure the speaker is not speaking cue as well.
@@ -189,16 +218,16 @@ class Converse:
                            (line, speakerObj, speakerObj.isPlayingAction(speakerLayer), \
                            speakerObj.getActionFrame(speakerLayer)))
 
-                        if (waitFor == None):
+                        if (wait_for == None):
                                 print('')
 
                                 print('waiting for: %s which playing status is: %3d, running frame: %3d, test within endRange %d.' % \
-                                   (waitForObj, waitForObj.isPlayingAction(waitForLayer), \
-                                    waitForObj.getActionFrame(waitForLayer), \
-                                    waitForObj.getActionFrame(waitForLayer)in endRange))
+                                   (wait_forObj, wait_forObj.isPlayingAction(wait_forLayer), \
+                                    wait_forObj.getActionFrame(wait_forLayer), \
+                                    wait_forObj.getActionFrame(wait_forLayer)in endRange))
 
 
-                    if waitFor == None or waitForObj.getActionFrame(waitForLayer)in endRange:  # no need to wait for d01 if it has not been spoken
+                    if wait_for == None or wait_forObj.getActionFrame(wait_forLayer)in endRange:  # no need to wait for d01 if it has not been spoken
                         speakerObj.playAction(speakerAction,line['startFrame'],line['endFrame'], layer = speakerLayer)
                         if soundFileName: speaker.playSoundV1(soundFileName, G.soundPathName)
                         line['spoken']=True   # set status as spoken, that is commence speaking so that in next frame the action will not be executed again.
@@ -210,72 +239,38 @@ class Converse:
                     self.marker = CONVERSE_MARKER_END
                     # G.converse.mode == CONVERSE_MODE_STOP
         
-        
-        
-                
-    def toPlay_backup(self, cont):
-        print('running toPlay')
-        for line in self.dopeList:    # loop for each line
-
-            speaker = line['speaker']    # for each line get the speaker and who it is waiting for
-            waitFor = line['waitFor']
-            
-            speakerLayer = speaker.layer
-            speakerObj = speaker.speakerObj
-            speakerAction = speaker.objAction
-            soundFileName = line['soundFileName']
-
-            if not (waitFor == None):
-                waitForLayer = waitFor.layer
-                waitForObj = waitFor.speakerObj
-                endRange = range(line['waitForFrame'][0],line['waitForFrame'][1]) 
-            
-            # speak out if the line is not start spoken and the object is not speaking anything at the same time
-            # the latter condition is added to make sure the speaker is not speaking cue as well.
-            frame = speakerObj.getActionFrame(speakerLayer)
-            if frame == line['endFrame']:  line['completed'] = True
-            
-            
-            if not (line['spoken'] or speakerObj.isPlayingAction(speakerLayer)):
-                if self.debug:
-                    print('line: %s, \nSpeaker %s, who playing status is: %3d, running frame: %3d.' % \
-                       (line, speakerObj, speakerObj.isPlayingAction(speakerLayer), \
-                       speakerObj.getActionFrame(speakerLayer)))
-                    
-                    if (waitFor == None):
-                            print('')
-
-                            print('waiting for: %s which playing status is: %3d, running frame: %3d, test within endRange %d.' % \
-                               (waitForObj, waitForObj.isPlayingAction(waitForLayer), \
-                                waitForObj.getActionFrame(waitForLayer), \
-                                waitForObj.getActionFrame(waitForLayer)in endRange))
-
-                
-                if waitFor == None or waitForObj.getActionFrame(waitForLayer)in endRange:  # no need to wait for d01 if it has not been spoken
-                    speakerObj.playAction(speakerAction,line['startFrame'],line['endFrame'], layer = speakerLayer)
-                    if soundFileName: speaker.playSoundV1(soundFileName, G.soundPathName)
-                    line['spoken']=True   # set status as spoken, that is commence speaking so that in next frame the action will not be executed again.
-                    if line['line'] == 'd01':   self.marker = CONVERSE_MARKER_START
-            
-            # just check for whether it is end of conversation        
-            if line['line'] == 'd99' and line['spoken'] and not speakerObj.isPlayingAction(speakerLayer): 
-                print('line d99 is spoken and not playing')
-                self.marker = CONVERSE_MARKER_END
-                # G.converse.mode == CONVERSE_MODE_STOP
+   
 def read_converses():
     # load dopeList from json file
-    file_path = 'C:\\Users\\Think\\OneDrive\\Documents\\blender_working\\proj_word_naming\\prod\\3D\\edit\\scenes\\cup_of_tea'
-    with open(file_path+'\\' + 'converses.json', 'r') as f:
+    #C:\Users\Think\OneDrive\Documents\blender_working\proj_word_naming\nbupbge\src\scripts
+    file_path = 'C:\\Users\\Think\\OneDrive\\Documents\\blender_working\\proj_word_naming\\nbupbge\\src\\scripts'
+    with open(file_path+'\\' + 'converses_v1.json', 'r') as f:
         data = json.load(f)
-        #print(data)
+    
+    G.background_pic_dict = data["background_pic_dict"]
+    mimetypes.init()
+    G.background_pic_type_dict = {}
+    
+    for x, y in G.background_pic_dict.items():
+        file_name = G.expandPath("//"+y)
+        mimestart = mimetypes.guess_type(file_name)[0]
+        mimestart = mimestart.split('/')[0]
+        G.background_pic_type_dict[x] = mimestart
+    
     G.converses=[]
-    for i in data['converses']:
-        print('name_object: \n', {i['name_object']})
-        for line in i['dope_list']:
-            print('line: ', line)
-        G.converses.append(i)    
-    print('G.converse: {G.converses}')
+    for i in data['converses']:  # each i is a dictionary containing pairs of '_comment', 'name_object', and 'dope_list'
+        print(f'i in data["converses"]: \n{i}')
+        print(f' -- comment: \n {i["_comment"]} \
+        \n   charList: \n{i["charList"]} \
+        \n   dope_list: \n{i["dopeList"]}  \
+        ')
+        
+        G.converses.append(Converse(i["dopeList"],i["charList"], i["background_pic"], i["display_cube_pic"])) 
+        
+    print(f'G.converses: {G.converses}')
     f.close()
+    
+    
             
 def initSpeak(cont):
     # trigger by an always sensor, execute once only with high priority
@@ -291,29 +286,16 @@ def initSpeak(cont):
     #scene.active_camera = menu_camera
     scene.active_camera = render_camera
     G.source = []    
+    G.background_pic_source = {}
+  
     
     fileInfo ={0:'playingAssetReuseV4d.blend', 1:'playingAssetReuseV4d.blend'}  # key: value = scene: blender file name
          
-    alan = U.Person(objAction = 'alanAction', layer =0, playByParent = False, name = 'alan')  
-    nina = U.Person(objAction = 'ninaAction', layer =1, playByParent = False, name = 'nina')  
-    renderCamera = U.Person(objAction = 'renderCameraAction', layer =3, name = 'menu_camera')  
-    
+   
     read_converses()
-
-    name_object = U.Person(objAction = 'cup_of_teaAction', layer =2, name = 'cup_of_tea')
-    dopeList =[{'line': 'd01', 'speaker': alan, 'startFrame': 1, 'endFrame':  89, 'soundFileName': "d01_INV_CAR.wav", 'waitFor':None, 'waitForFrame':(1,20),  'spoken':False, 'completed':False},
-                {'line': 'p01', 'speaker': name_object, 'startFrame': 1, 'endFrame':  10, 'soundFileName': None, 'waitFor':None, 'waitForFrame':(1,20),'spoken':False, 'completed':False},
-                {'line': 'd01_aft', 'speaker': alan, 'startFrame': 90, 'endFrame':  237, 'soundFileName': None, 'waitFor':alan, 'waitForFrame':(80,89),  'spoken':False, 'completed':False},
-                {'line': 'd04', 'speaker': alan, 'startFrame': 238, 'endFrame':  318, 'soundFileName': "d04_INV_CAR.wav", 'waitFor':nina, 'waitForFrame':(230,239),'spoken':False, 'completed':False},
-                {'line': 'd06', 'speaker': alan, 'startFrame': 350, 'endFrame':  370, 'soundFileName': "d06_INV_CAR.wav", 'waitFor':nina, 'waitForFrame':(340,346),'spoken':False, 'completed':False},
-                {'line': 'd02', 'speaker': nina, 'startFrame': 90, 'endFrame':  158, 'soundFileName': "d02_CAR_CAR.wav", 'waitFor':alan, 'waitForFrame':(80,90), 'spoken':False, 'completed':False},
-                {'line': 'd03', 'speaker': nina, 'startFrame': 160, 'endFrame':  238, 'soundFileName': "d03_CAR_INV.wav", 'waitFor':nina, 'waitForFrame':(150,159),'spoken':False, 'completed':False},
-                {'line': 'd05', 'speaker': nina, 'startFrame': 318, 'endFrame':  345, 'soundFileName': "d05_CAR_INV.wav",'waitFor':alan, 'waitForFrame':(310,319), 'spoken':False, 'completed':False},
-                {'line': 'p02', 'speaker': name_object, 'startFrame': 317, 'endFrame':  330, 'soundFileName': None, 'waitFor':nina, 'waitForFrame':(318,345),'spoken':False, 'completed':False},
-                {'line': 'd99', 'speaker': nina, 'startFrame': 380, 'endFrame':  470, 'soundFileName': "d07_CAR_TAR.wav", 'waitFor':alan, 'waitForFrame':(360,371),'spoken':False, 'completed':False}]
-
-    G.converse = Converse(dopeList)  
-    
+    # register the counter of the converse to run
+    G.converse_seq= 0
+    G.converse = G.converses[G.converse_seq]
     
     G.soundPathName = ('C:\\Users\\Think\\OneDrive\\Documents\\blender_working\\proj_word_naming\\prod\\3D\\assets\\sound\\conversationFromWordTalk')
     print('G.converse', G.converse, 'dir(converse)', dir(G.converse))
@@ -349,10 +331,7 @@ def initSpeak(cont):
     ninaKeyDict = {'assignKey': bge.events.KKEY, 'menu_object' : G.nina_menu}
     G.arrow_menu_key.addDict('nina', ninaKeyDict)
  
-
- 
- 
-def render_background(cont, pic_mat, index=None):
+def render_background(cont, obj_name, pic_mat, pic_key=None, video=False):
 
     # get current scene
     scene = G.getCurrentScene()
@@ -361,7 +340,8 @@ def render_background(cont, pic_mat, index=None):
     objList = scene.objects
 
     # get object named Plane
-    obj = objList["background_plane"]
+    #obj = objList["background_plane"]
+    obj = objList[obj_name]
     
     # check to see if the render has been created
     if "object_texture" in obj:
@@ -370,14 +350,15 @@ def render_background(cont, pic_mat, index=None):
         # get texture
         object_texture  = obj["object_texture"]
 
-        if index is None:
+        if pic_key is None:
             # update the texture
             # object_texture.refresh(False)
             pass
             #object_texture.refresh(False)  # try to refresh every frames
         
         else:
-            object_texture.source = G.source[index]
+            #object_texture.source = G.source[pic_key]
+            object_texture.source = G.background_pic_source[pic_key]
             object_texture.refresh(True)
 
     # if the mirror wasn't created
@@ -398,24 +379,92 @@ def render_background(cont, pic_mat, index=None):
             texChannel = 0
 
             # create a new source with an external image
-            
-            G.source.append(texture.ImageFFmpeg(G.expandPath("//sleepz.jpg")))
-
-            G.source.append(texture.ImageFFmpeg(G.expandPath("//dundeeHighStreetScene.jpg")))
-
-            G.source.append(texture.ImageFFmpeg(G.expandPath("//james_hutton.jpg")))
-            
+            # x is the picture name, y is the file name of the file
+            # now the dict G.background_pic_source contain the pair of x, texture containing the file image
+            #for x, y in G.background_pic_dict.items():
+            #    G.background_pic_source[x] = texture.ImageFFmpeg(G.expandPath("//"+y))
+            #  the above is done in init
             # create a the texture object
             #object_texture = bge.texture.Texture(obj, matID, texChannel)
             object_texture = bge.texture.Texture(obj, matID)
-            object_texture.source = G.source[0]
-            
+            #object_texture.source = G.source[0]
+            #object_texture.source = G.background_pic_source[G.converse.background_pic]
+            object_texture.source = G.background_pic_source[pic_key]
             # save mirror as an object variable
             obj["object_texture"] = object_texture
             
             
             print('calling to create texture', object_texture)
             object_texture.refresh(True)
+ 
+ 
+ 
+def render_background_backup(cont, obj_name, pic_mat, pic_key=None):
+
+    # get current scene
+    scene = G.getCurrentScene()
+
+    # get list of objects in scene
+    objList = scene.objects
+
+    # get object named Plane
+    #obj = objList["background_plane"]
+    obj = objList[obj_name]
+    
+    # check to see if the render has been created
+    if "object_texture" in obj:
+        print('yes, object_texture has been created in obj', obj)
+
+        # get texture
+        object_texture  = obj["object_texture"]
+
+        if pic_key is None:
+            # update the texture
+            # object_texture.refresh(False)
+            pass
+            #object_texture.refresh(False)  # try to refresh every frames
+        
+        else:
+            #object_texture.source = G.source[pic_key]
+            object_texture.source = G.background_pic_source[pic_key]
+            object_texture.refresh(True)
+
+    # if the mirror wasn't created
+    else:
+            
+            # The name of object material being used for the mirror
+            # I named the material Reflect
+            #mat = "MAReflect"   remember to add prefix for material (MA) or image (IM)
+            
+            mat = pic_mat
+            print('mat', pic_mat)
+            # get the mirror material ID
+            matID = bge.texture.materialID(obj, mat)
+            print ('material obj: ',obj, 'and mat ID', matID)
+            
+            # get texture being replaced
+            # texture I'm using is in 1st Channel
+            texChannel = 0
+
+            # create a new source with an external image
+            # x is the picture name, y is the file name of the file
+            # now the dict G.background_pic_source contain the pair of x, texture containing the file image
+            for x, y in G.background_pic_dict.items():
+                G.background_pic_source[x] = texture.ImageFFmpeg(G.expandPath("//"+y))
+            
+            # create a the texture object
+            #object_texture = bge.texture.Texture(obj, matID, texChannel)
+            object_texture = bge.texture.Texture(obj, matID)
+            #object_texture.source = G.source[0]
+            object_texture.source = G.background_pic_source[G.converse.background_pic]
+            # save mirror as an object variable
+            obj["object_texture"] = object_texture
+            
+            
+            print('calling to create texture', object_texture)
+            object_texture.refresh(True)
+ 
+
             
 def changeTexture(cont, index):
     
@@ -451,6 +500,10 @@ def removeTexture(cont):
     except:
         pass
 
+
+    
+
+    
         
 
 def speak(cont):
@@ -481,20 +534,41 @@ def speak(cont):
         def _inner():
             G.converse.toReset(cont)
             #cont.activate(cont.actuators['a_coll_suspend_cup_of_tea'])
+            
             print('stop call back')
         return _inner
 
     def cb_backward():
         def _inner():
-            render_background(cont, 'MApic_mat', 1)
+            #render_background(cont, 'MApic_mat', 1)
+            
+            G.converse_seq = (G.converse_seq -1) % len(G.converses)
+            G.converse = G.converses[G.converse_seq]
+            render_background(cont, 'background_plane', 'MApic_mat', G.converse.background_pic)
+            render_background(cont, 'display_cube', 'MAdisplay_cube_front_mat', G.converse.display_cube_pic)
             print('backward call back')
+            print(f' background_pic: \n{G.converse.background_pic} \
+            \n   charList: \n{G.converse.charList} \
+            \n   dopelist: \n{G.converse.dopeList}  \
+            ')
+
         return _inner
 
 
     def cb_forward():
         def _inner():
-            render_background(cont, 'MApic_mat', 2)
+            #render_background(cont, 'MApic_mat', 2)
+            
+            G.converse_seq = (G.converse_seq +1) % len(G.converses)
+            G.converse = G.converses[G.converse_seq]
+            render_background(cont, 'background_plane', 'MApic_mat', G.converse.background_pic)
+            render_background(cont, 'display_cube', 'MAdisplay_cube_front_mat', G.converse.display_cube_pic)
             print('forward call forward')
+            print(f' background_pic: \n{G.converse.background_pic} \
+            \n   charList: \n{G.converse.charList} \
+            \n   dopelist: \n{G.converse.dopeList} \
+            ')
+
         return _inner
 
 
@@ -508,12 +582,20 @@ def speak(cont):
     if G.kick_start == 0:
         U.initMenu(cont)
         initSpeak(cont)
-        render_background(cont, 'MApic_mat')
+        
+        for x, y in G.background_pic_dict.items():
+            G.background_pic_source[x] = texture.ImageFFmpeg(G.expandPath("//"+y))
+            
+        render_background(cont, 'background_plane', 'MApic_mat', G.converse.background_pic)
+        render_background(cont, 'display_cube', 'MAdisplay_cube_front_mat', G.converse.display_cube_pic)
+        
+        #render_background(cont, 'background_plane', 'MApic_mat')
         cont.activate(cont.actuators['a_coll_add_cup_of_tea'])
 
         G.kick_start += 1
     
-    render_background(cont, 'MApic_mat')
+    render_background(cont, 'background_plane', 'MApic_mat')
+    render_background(cont, 'display_cube', 'MAdisplay_cube_front_mat')
     
     if G.flag_mouse:  G.arrow_menu_mouse.update(f1, f2, f3, f4, f5, f6)
         
