@@ -58,7 +58,7 @@ class Converse:
         self.dopeList = dopeList
         self.background_pic = background_pic
         self.display_cube_pic = display_cube_pic
-        #self.speakerDict = speakerDict
+    
         self.debug = False
         self.play_control = False  # if set it means conversation is enabled
         self.complete_status = True
@@ -67,13 +67,7 @@ class Converse:
         self.mode = CONVERSE_MODE_STOP
         self.pause_mode = False
         self.marker = CONVERSE_MARKER_START
-        
-        # to assign an object to character and add to the dope_list
-            
-        #alan = U.Person(objAction = 'alanAction', layer =0, playByParent = False, name = 'alan')  
-        #nina = U.Person(objAction = 'ninaAction', layer =1, playByParent = False, name = 'nina')  
-        #renderCamera = U.Person(objAction = 'renderCameraAction', layer =3, name = 'menu_camera')  
-        #name_object = U.Person(objAction = 'cup_of_teaAction', layer =2, name = 'cup_of_tea')
+    
     
         char ={}
         for i in self.charList:
